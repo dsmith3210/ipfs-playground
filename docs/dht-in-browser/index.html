@@ -1,0 +1,33 @@
+<html>
+	<head>
+        <meta charset="UTF-8">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ipfs/0.33.1/index.js"></script>
+	</head>
+	<body>
+		<pre id="scriptOutput"></pre>
+        
+		<script type="text/javascript">
+            try {
+                window.onerror = function(text, url, character, line, e) {
+                    document.getElementById('scriptOutput').innerHTML += 'Global Error ' + text + ' from ' + url + ':' + line + ':' + character + '<br><br>Stack:<br>' + e.stack + '<br><br>';
+                };
+                
+                const ipfs = new Ipfs({
+                    start: true,
+                    EXPERIMENTAL: {
+                        dht: true
+                    }
+                });
+                ipfs.on('ready', function() {
+                    document.getElementById('scriptOutput').innerHTML += 'IPFS is ready<br><br>';
+                        ipfs.id().then(function(id) {
+                           document.getElementById('scriptOutput').innerHTML += 'ID: ' + id.id + '<br><br>';
+                        });
+                });
+                document.getElementById('scriptOutput').innerHTML += 'IPFS successfully initialized<br><br>';
+            } catch(e) {
+                document.getElementById('scriptOutput').innerHTML += 'Error ' + e + '<br>' + e.stack + '<br><br>';
+            }
+		</script>
+	</body>
+</html>
